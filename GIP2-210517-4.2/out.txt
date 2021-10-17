@@ -1,0 +1,46 @@
+graph {
+  v00 [pos="0,0!",shape=circle]
+  v01 [pos="2,0!",shape=circle]
+  v02 [pos="7,0!",shape=circle]
+  v03 [pos="2,1!",shape=circle]
+  v04 [pos="3,1!",shape=circle]
+  v05 [pos="6,1!",shape=circle]
+  v06 [pos="8,1!",shape=circle]
+  v07 [pos="3,2!",shape=circle]
+  v08 [pos="4,2!",shape=circle]
+  v09 [pos="0,3!",shape=circle]
+  v10 [pos="2,3!",shape=circle]
+  v11 [pos="4,3!",shape=circle]
+  v12 [pos="5,3!",shape=circle]
+  v13 [pos="6,3!",shape=circle]
+  v14 [pos="8,3!",shape=circle]
+  v15 [pos="9,3!",shape=circle]
+  v16 [pos="0,4!",shape=circle]
+  v17 [pos="2,4!",shape=circle]
+  v18 [pos="4,4!",shape=circle]
+  v19 [pos="5,4!",shape=circle]
+  v00 -- v01
+  v01 -- v02
+  v01 -- v04
+  v03 -- v04
+  v03 -- v07
+  v04 -- v05
+  v04 -- v08
+  v05 -- v06
+  v07 -- v08
+  v07 -- v11
+  v08 -- v12
+  v09 -- v10
+  v09 -- v16
+  v10 -- v11
+  v10 -- v17
+  v11 -- v12
+  v12 -- v13
+  v12 -- v18
+  v13 -- v14
+  v13 -- v19
+  v14 -- v15
+  v16 -- v17
+  v17 -- v18
+  v18 -- v19
+}
