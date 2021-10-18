@@ -54,6 +54,9 @@
     <ClCompile Include="FloydWarshall.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Postman.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Node.h">
@@ -90,6 +93,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="FloydWarshall.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Postman.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

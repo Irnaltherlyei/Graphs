@@ -2,6 +2,7 @@
 
 #include "Printable.h"
 #include "Graph.h"
+#include <iomanip>
 
 class Writer : public Printable
 {

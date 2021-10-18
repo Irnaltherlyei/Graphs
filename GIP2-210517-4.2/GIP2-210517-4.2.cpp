@@ -10,6 +10,7 @@
 #include "EdgeTable.h"
 #include "Djikstra.h"
 #include "FloydWarshall.h"
+#include "Postman.h"
 #include <fstream>
 
 int main()
@@ -69,9 +70,10 @@ int main()
         file >> tmp;
         int node1 = -1;
         int node2 = -1;
-        while (file >> node1 >> node2) {
+        float weight = 1.0f;
+        while (file >> node1 >> node2 >> weight) {
             if (node1 >= 0 && node2 >= 0 && node1 < z && node2 < z) {
-                graph->connectNodes(node1, node2);
+                graph->connectNodes(node1, node2, weight);
             }
         }
         file.close();
@@ -90,10 +92,11 @@ int main()
         //in << new AdjacencyMatrixWriter(graph);
         //in << new IncidencyMatrixWriter(graph);
         //in << new EdgeTable(graph);
-        //in << new Djikstra(graph, 0);
-        //in << new FloydWarshall(graph);
+        //in << new Djikstra(graph, 6);                   // Returns cost matrix and parent matrix
+        //in << new FloydWarshall(graph);               // Returns cost matrix and parent matrix
         in.close();
     }
+    //new Postman(graph);
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

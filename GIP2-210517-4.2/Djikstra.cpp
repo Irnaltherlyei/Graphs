@@ -5,26 +5,26 @@ std::string Djikstra::toString() const
 	std::stringstream ss;
 	for (auto u : length) {
 		if (u == std::numeric_limits<std::size_t>::max()) {
-			ss << std::setw(2) << "--" << ' ';
+			ss << std::setw(3) << "--" << ' ';
 		}
 		else {
-			ss << std::setw(2) << u << ' ';
+			ss << std::setw(3) << u << ' ';
 		}	
 	}
 	ss << std::endl << std::endl;
 	for (auto u : prev) {
 		if (u == std::numeric_limits<std::size_t>::max()) {
-			ss << std::setw(2) << "--" << ' ';
+			ss << std::setw(3) << "--" << ' ';
 		}
 		else {
-			ss << std::setw(2) << u << ' ';
+			ss << std::setw(3) << u << ' ';
 		}
 	}
 	ss << std::endl;
 	return ss.str();
 }
 
-void Djikstra::djikstra(unsigned int vertex)
+void Djikstra::djikstra(unsigned int vertex, std::pair<std::vector<size_t>, std::vector<size_t>>* pair)
 {
 	for (int i = 0; i < graph->nodes_.size(); i++) {
 		length.push_back(std::numeric_limits<std::size_t>::max());
@@ -38,12 +38,12 @@ void Djikstra::djikstra(unsigned int vertex)
 	while (!to_visit.empty()) {
 		int index_min_value = to_be_processed(to_visit);
 		for (int i = 0; i < graph->matrix.size(); i++) {
-			if (graph->matrix[index_min_value][i] == 1) {
+			if (graph->matrix[index_min_value][i] > 0) {
 				if (std::find(visited.begin(), visited.end(), index_min_value) == visited.end()) {
 					to_visit.push_back(i);
 				}
-				if (length[i] > length[index_min_value] + 1) {
-					length[i] = length[index_min_value] + 1;
+				if (length[i] > length[index_min_value] + graph->matrix[index_min_value][i]) {
+					length[i] = length[index_min_value] + graph->matrix[index_min_value][i];
 					prev[i] = index_min_value;
 				}				
 			}
@@ -67,6 +67,9 @@ void Djikstra::djikstra(unsigned int vertex)
 			std::cout << a << ' ';
 		}
 		std::cout << std::endl;*/
+	}
+	if (pair != nullptr) {
+		*pair = std::pair<std::vector<size_t>, std::vector<size_t>>(length, prev);
 	}
 }
 

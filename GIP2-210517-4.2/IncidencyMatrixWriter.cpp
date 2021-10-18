@@ -5,7 +5,7 @@ std::string IncidencyMatrixWriter::toString() const
     std::stringstream ss;
     for (auto v : inzidenzMatrix) {
         for (auto f : v) {
-            ss << f << " ";
+            ss << std::setw(3) << f << " ";
         }
         ss << std::endl;
     }
@@ -17,7 +17,7 @@ void IncidencyMatrixWriter::getIncidencyMatrix()
     int countEdges = 0;
     for (int i = 0; i < matrix.size(); i++) {
         for (int j = 0; j < matrix.size(); j++) {
-            if (matrix[i][j] == 1.0f && i <= j) {
+            if (matrix[i][j] > 0.0f && i <= j) {
                 countEdges++;
             }
         }
@@ -28,8 +28,8 @@ void IncidencyMatrixWriter::getIncidencyMatrix()
     int edge = 0;
     for (int i = 0; i < matrix.size(); i++) {
         for (int j = 0; j < matrix.size(); j++) {
-            if (matrix[i][j] == 1.0f && i <= j) {
-                inzidenzMatrix[i][edge] = inzidenzMatrix[j][edge] = 1.0f;
+            if (matrix[i][j] > 0.0f && i <= j) {
+                inzidenzMatrix[i][edge] = inzidenzMatrix[j][edge] = matrix[i][j];
                 edge++;
                 if (edge == countEdges) {
                     break;

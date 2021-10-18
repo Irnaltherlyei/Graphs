@@ -149,6 +149,7 @@
     <ClCompile Include="Graphviz.cpp" />
     <ClCompile Include="IncidencyMatrixWriter.cpp" />
     <ClCompile Include="Node.cpp" />
+    <ClCompile Include="Postman.cpp" />
     <ClCompile Include="Printable.cpp" />
     <ClCompile Include="SlowNode.cpp" />
     <ClCompile Include="Writer.cpp" />
@@ -163,6 +164,7 @@
     <ClInclude Include="Graphviz.h" />
     <ClInclude Include="IncidencyMatrixWriter.h" />
     <ClInclude Include="Node.h" />
+    <ClInclude Include="Postman.h" />
     <ClInclude Include="Printable.h" />
     <ClInclude Include="SlowNode.h" />
     <ClInclude Include="Writer.h" />

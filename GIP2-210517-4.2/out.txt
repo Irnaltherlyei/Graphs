@@ -1,46 +1,26 @@
 graph {
-  v00 [pos="0,0!",shape=circle]
-  v01 [pos="2,0!",shape=circle]
-  v02 [pos="7,0!",shape=circle]
-  v03 [pos="2,1!",shape=circle]
-  v04 [pos="3,1!",shape=circle]
-  v05 [pos="6,1!",shape=circle]
-  v06 [pos="8,1!",shape=circle]
-  v07 [pos="3,2!",shape=circle]
-  v08 [pos="4,2!",shape=circle]
-  v09 [pos="0,3!",shape=circle]
-  v10 [pos="2,3!",shape=circle]
-  v11 [pos="4,3!",shape=circle]
-  v12 [pos="5,3!",shape=circle]
-  v13 [pos="6,3!",shape=circle]
-  v14 [pos="8,3!",shape=circle]
-  v15 [pos="9,3!",shape=circle]
-  v16 [pos="0,4!",shape=circle]
-  v17 [pos="2,4!",shape=circle]
-  v18 [pos="4,4!",shape=circle]
-  v19 [pos="5,4!",shape=circle]
-  v00 -- v01
-  v01 -- v02
-  v01 -- v04
-  v03 -- v04
-  v03 -- v07
-  v04 -- v05
-  v04 -- v08
-  v05 -- v06
-  v07 -- v08
-  v07 -- v11
-  v08 -- v12
-  v09 -- v10
-  v09 -- v16
-  v10 -- v11
-  v10 -- v17
-  v11 -- v12
-  v12 -- v13
-  v12 -- v18
-  v13 -- v14
-  v13 -- v19
-  v14 -- v15
-  v16 -- v17
-  v17 -- v18
-  v18 -- v19
+  A [pos="0,3!",shape=circle]
+  B [pos="1,5!",shape=circle]
+  C [pos="4,5!",shape=circle]
+  D [pos="5,3!",shape=circle]
+  E [pos="4,1!",shape=circle]
+  F [pos="1,1!",shape=circle]
+  G [pos="3,4!",shape=circle]
+  A -- B [label="12"]
+  A -- C [label="9"]
+  A -- D [label="30"]
+  A -- F [label="14"]
+  A -- G [label="20"]
+  B -- C [label="7"]
+  B -- E [label="5"]
+  B -- F [label="6"]
+  C -- D [label="6"]
+  C -- G [label="12"]
+  D -- E [label="18"]
+  D -- F [label="14"]
+  D -- G [label="8"]
+  E -- F [label="15"]
 }
+ 20  19  12   8  24  22   0 
+
+  6   2   6   6   1   3  -- 

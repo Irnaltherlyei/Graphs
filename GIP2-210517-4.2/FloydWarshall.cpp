@@ -6,10 +6,10 @@ std::string FloydWarshall::toString() const
 	for (auto v : floydWarshallMatrix) {
 		for (auto u : v) {
 			if (u == std::numeric_limits<std::size_t>::max()) {
-				ss << std::setw(2) << "--" << ' ';
+				ss << std::setw(3) << "--" << ' ';
 			}
 			else {
-				ss << std::setw(2) << u << ' ';
+				ss << std::setw(3) << u << ' ';
 			}
 		}
 		ss << std::endl;
@@ -18,10 +18,10 @@ std::string FloydWarshall::toString() const
 	for (auto v : prev) {
 		for (auto u : v) {
 			if (u == std::numeric_limits<std::size_t>::max()) {
-				ss << std::setw(2) << "--" << ' ';
+				ss << std::setw(3) << "--" << ' ';
 			}
 			else {
-				ss << std::setw(2) << u << ' ';
+				ss << std::setw(3) << u << ' ';
 			}
 		}
 		ss << std::endl;

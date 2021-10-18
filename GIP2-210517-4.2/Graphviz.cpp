@@ -11,8 +11,9 @@ std::string Graphviz::toString() const
     // ss << new EdgeTable(graph); possible but whitespaces are not present in the EdgeTable Class
     for (int i = 0; i < matrix.size(); i++) {
         for (int j = 0; j < matrix.size(); j++) {
-            if (matrix[i][j] == 1.0f && i <= j) {
-                ss << "  " << nodes_[i]->name_ << " -- " << nodes_[j]->name_ << std::endl;
+            if (matrix[i][j] != 0.0f && i <= j) {
+                ss << "  " << nodes_[i]->name_ << " -- " << nodes_[j]->name_ << " " 
+                   << "[label=\"" << matrix[i][j] << "\"]" << std::endl;
             }
         }
     }
