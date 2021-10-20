@@ -8,7 +8,8 @@ class Writer : public Printable
 {
 public:
 	std::vector<std::vector<float>> matrix;
-	Writer(Graph* g) : matrix{ g->matrix } {};
+	Graph* graph;
+	Writer(Graph* g) : graph{ g }, matrix{ g->matrix } {};
 	virtual std::string toString() const;
 };
 

@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Djikstra.h"
+#include "FloydWarshall.h"
+#include "Graphviz.h"
 #include <iomanip>
 #include <algorithm>
 

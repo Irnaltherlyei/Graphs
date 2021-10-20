@@ -92,11 +92,11 @@ int main()
         //in << new AdjacencyMatrixWriter(graph);
         //in << new IncidencyMatrixWriter(graph);
         //in << new EdgeTable(graph);
-        //in << new Djikstra(graph, 6);                   // Returns cost matrix and parent matrix
+        //in << new Djikstra(graph, 0);                   // Returns cost matrix and parent matrix
         //in << new FloydWarshall(graph);               // Returns cost matrix and parent matrix
         in.close();
     }
-    //new Postman(graph);
+    new Postman(graph);
 }
 
 // Run program: Ctrl + F5 or Debug > Start Without Debugging menu

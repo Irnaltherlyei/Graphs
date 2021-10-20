@@ -36,7 +36,8 @@ void Djikstra::djikstra(unsigned int vertex, std::pair<std::vector<size_t>, std:
 	std::vector<size_t> visited;
 
 	while (!to_visit.empty()) {
-		int index_min_value = to_be_processed(to_visit);
+		// Using matrix
+		/*int index_min_value = to_be_processed(to_visit);
 		for (int i = 0; i < graph->matrix.size(); i++) {
 			if (graph->matrix[index_min_value][i] > 0) {
 				if (std::find(visited.begin(), visited.end(), index_min_value) == visited.end()) {
@@ -47,8 +48,31 @@ void Djikstra::djikstra(unsigned int vertex, std::pair<std::vector<size_t>, std:
 					prev[i] = index_min_value;
 				}				
 			}
-		}
+		}*/
 		
+		// Using edges_
+		int index_min_value = to_be_processed(to_visit);
+		for (int i = 0; i < graph->nodes_.size(); i++) {
+			if (graph->getEdges(index_min_value, i).empty()){
+				continue;
+			}
+			size_t min_value = std::numeric_limits<size_t>::max();
+			for (auto edge : graph->getEdges(index_min_value, i)) {
+				if (edge[2] < min_value) {
+					min_value = edge[2];
+				}
+			}
+			if (min_value > 0) {
+				if (std::find(visited.begin(), visited.end(), index_min_value) == visited.end()) {
+					to_visit.push_back(i);
+				}
+				if (length[i] > length[index_min_value] + min_value) {
+					length[i] = length[index_min_value] + min_value;
+					prev[i] = index_min_value;
+				}
+			}
+		}
+
 		auto it = std::find(to_visit.begin(), to_visit.end(), index_min_value);
 		if (it != to_visit.end()) {
 			visited.push_back(index_min_value);

@@ -7,7 +7,7 @@
 class Djikstra : public Writer
 {
 public:
-	Djikstra(Graph* g, int vertex, std::pair<std::vector<size_t>, std::vector<size_t>>* pair = nullptr) : Writer(g), graph{g} {
+	Djikstra(Graph* g, int vertex, std::pair<std::vector<size_t>, std::vector<size_t>>* pair = nullptr) : Writer(g), graph{ g } {
 		djikstra(vertex, pair);
 	};
 	std::string toString() const;

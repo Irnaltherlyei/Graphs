@@ -6,29 +6,23 @@ void Graph::addNode(Node* node)
     nodes_.push_back(node);
 }
 
-void Graph::connectNodes(std::string node1, std::string node2, float weight)
+void Graph::connectNodes(Node* node1, Node* node2, float weight)
 {
-    int index1 = -1;
-    int index2 = -1;
-    for (int i = 0; i < nodes_.size(); i++) {
-        if (nodes_[i]->name_ == node1) {
-            index1 = i;
-        } 
-        else if (nodes_[i]->name_ == node2) {
-            index2 = i;
-        }
-    }
-    if (index1 >= 0 && index2 >= 0) {
-        matrix[index1][index2] = weight;
-        matrix[index2][index1] = weight;
-    }
+    int index1 = getIndex(node1);
+    int index2 = getIndex(node2);
+    if (index1 == -1 or index2 == -1) return;
+
+    matrix[index1][index2] = weight;
+    matrix[index2][index1] = weight;
+    edges_.push_back(std::vector<float>{(float)index1, (float)index2, weight});
 }
 
 void Graph::connectNodes(int node1, int node2, float weight)
 {
-    if (node1 >= 0 && node2 >= 0 && node1 < matrix.size() && node2 < matrix.size()) {
+    if (node1 >= 0 && node2 >= 0 && node1 < nodes_.size() && node2 < nodes_.size()) {
         matrix[node1][node2] = weight;
         matrix[node2][node1] = weight;
+        edges_.push_back(std::vector<float>{(float)node1, (float)node2, weight});
     }
 }
 
@@ -36,27 +30,15 @@ unsigned int Graph::countEdges(int node)
 {
     unsigned int count = 0;
     if (node != -1) {
-        for (int j = 0; j < matrix[node].size(); j++) {
+        // Using matrix
+        /*for (int j = 0; j < matrix[node].size(); j++) {
             if (matrix[node][j] != 0) {
                 count++;
             }
-        }
-    }
-    return count;
-}
-
-unsigned int Graph::countEdges(std::string node)
-{
-    int index = -1;
-    for (int i = 0; i < nodes_.size(); i++) {
-        if (nodes_[i]->name_ == node) {
-            index = i;
-        }
-    }
-    unsigned int count = 0;
-    if (index != -1) {
-        for (int j = 0; j < matrix[index].size(); j++) {
-            if (matrix[index][j] != 0) {
+        }*/
+        // Using edges_
+        for (auto edge : edges_) {
+            if (edge[0] == node || edge[1] == node) {
                 count++;
             }
         }
@@ -64,20 +46,81 @@ unsigned int Graph::countEdges(std::string node)
     return count;
 }
 
-bool Graph::areConnected(std::string node1, std::string node2)
-{
-    int index1 = -1;
-    int index2 = -1;
-    for (int i = 0; i < nodes_.size(); i++) {
-        if (nodes_[i]->name_ == node1) {
-            index1 = i;
-        }
-        else if (nodes_[i]->name_ == node2) {
-            index2 = i;
+std::vector<std::vector<float>> Graph::getEdges(Node* node1, Node* node2)
+{   
+    std::vector<std::vector<float>> edges;
+
+    int index1 = getIndex(node1);
+    int index2 = getIndex(node2);
+    if (index1 == -1 || index2 == -1) return edges;
+
+    for (auto edge : edges_) {
+        if (edge[0] == index1 && edge[1] == index2 || edge[1] == index1 && edge[0] == index2) {
+            edges.push_back(std::vector<float>{edge[0], edge[1], edge[2]});
         }
     }
-    if (index1 >= 0 && index2 >= 0 && matrix[index1][index2] == 1.0f) {
+    return edges;
+}
+
+std::vector<std::vector<float>> Graph::getEdges(int index1, int index2)
+{
+    std::vector<std::vector<float>> edges;
+
+    for (auto edge : edges_) {
+        if (edge[0] == index1 && edge[1] == index2 || edge[1] == index1 && edge[0] == index2) {
+            edges.push_back(std::vector<float>{edge[0], edge[1], edge[2]});
+        }
+    }
+    return edges;
+}
+
+unsigned int Graph::countEdges(Node* node)
+{
+    int index = getIndex(node);
+    if (index == -1) return false;
+
+    unsigned int count = 0;
+    if (index != -1) {
+        // Using matrix
+        /*for (int j = 0; j < matrix[index].size(); j++) {
+            if (matrix[index][j] != 0) {
+                count++;
+            }
+        }*/
+        // Using edges_
+        for (auto edge : edges_) {
+            if (edge[0] == index || edge[1] == index) {
+                count++;
+            }
+        }
+    }
+    return count;
+}
+
+bool Graph::areConnected(Node* node1, Node* node2)
+{
+    int index1 = getIndex(node1);
+    int index2 = getIndex(node2);
+    if (index1 == -1 or index2 == -1) return false;
+    // Using matrix
+    /*if (index1 >= 0 && index2 >= 0 && matrix[index1][index2] == 1.0f) {
         return true;
+    }*/
+    // Using edges_
+    for (auto edge : edges_) {
+        if (edge[0] == index1 && edge[1] == index2 || edge[1] == index1 && edge[0] == index2) {
+            return true;
+        }
     }
     return false;
+}
+
+unsigned int Graph::getIndex(Node* node) {
+    int index = -1;
+    for (int i = 0; i < nodes_.size(); i++) {
+        if (nodes_[i]->name_ == node->name_) {
+            index = i;
+        }
+    }
+    return index;
 }

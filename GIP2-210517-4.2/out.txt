@@ -6,9 +6,10 @@ graph {
   E [pos="4,1!",shape=circle]
   F [pos="1,1!",shape=circle]
   G [pos="3,4!",shape=circle]
+  H [pos="2,2!",shape=circle]
   A -- B [label="12"]
   A -- C [label="9"]
-  A -- D [label="30"]
+  A -- D [label="39"]
   A -- F [label="14"]
   A -- G [label="20"]
   B -- C [label="7"]
@@ -20,7 +21,6 @@ graph {
   D -- F [label="14"]
   D -- G [label="8"]
   E -- F [label="15"]
+  H -- F [label="15"]
+  A -- B [label="12"]
 }
- 20  19  12   8  24  22   0 
-
-  6   2   6   6   1   3  -- 
