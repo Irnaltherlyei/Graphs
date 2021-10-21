@@ -15,6 +15,7 @@ public:
 private:
 	Graph* graph;
 	void postman();
+	std::vector<Node*> pairOdd(std::vector<Node*> vertices);
 	bool isComplete(Graph*);
 };
 

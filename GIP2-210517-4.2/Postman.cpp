@@ -69,7 +69,7 @@ void Postman::postman()
 	// Find vertices with odd degree
 	std::vector<Node*> odd;
 	for (auto vertex : graph->nodes_) {
-		std::cout << vertex->name_ << " " << graph->countEdges(vertex) << std::endl;
+		//std::cout << vertex->name_ << " " << graph->countEdges(vertex) << std::endl;
 		if (graph->countEdges(vertex) % 2) {
 			odd.push_back(vertex);
 		}
@@ -104,6 +104,25 @@ void Postman::postman()
 		}
 
 		// GET THOSE EDGES AND ADD TO GRAPH
+		std::vector<Node*> pairs;
+		pairs = pairOdd(oddVertices.nodes_);
+	}
+}
+
+std::vector<Node*> Postman::pairOdd(std::vector<Node*> vertices)
+{
+	if (vertices.empty()) {
+		return;
+	}
+	else {
+		Node* node = vertices.front();
+		vertices.erase(vertices.begin());
+		for (auto j : vertices) {
+			vertices.erase(j);
+			for (auto r : pairOdd(vertices)){
+				return;
+			}
+		}
 	}
 }
 
