@@ -15,7 +15,12 @@ public:
 private:
 	Graph* graph;
 	void postman();
-	std::vector<Node*> pairOdd(std::vector<Node*> vertices);
+	std::string pairOdd(std::vector<int> vertices, int ov);
+	std::vector<std::vector<int>> pairOdd(std::vector<int> vertices);
+	std::vector<std::vector<int>> aaa(std::vector<int> vertices, int index1, int index2);
+	std::vector<std::vector<int>> aaa(std::vector<int> vertices, std::vector<int> list, int in1, int in2);
+	std::vector<std::vector<int>> aaa(std::vector<int> vertices, std::vector<int> list);
+	std::vector<std::vector<std::pair<int, int>>> pairing(std::vector<int> vertices, std::vector<std::pair<int, int>> list);
 	bool isComplete(Graph*);
 };
 

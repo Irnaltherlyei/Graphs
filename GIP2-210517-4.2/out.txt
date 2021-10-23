@@ -6,7 +6,6 @@ graph {
   E [pos="4,1!",shape=circle]
   F [pos="1,1!",shape=circle]
   G [pos="3,4!",shape=circle]
-  H [pos="2,2!",shape=circle]
   A -- B [label="12"]
   A -- C [label="9"]
   A -- D [label="39"]
@@ -21,6 +20,4 @@ graph {
   D -- F [label="14"]
   D -- G [label="8"]
   E -- F [label="15"]
-  H -- F [label="15"]
-  A -- B [label="12"]
 }
