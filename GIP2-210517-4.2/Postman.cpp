@@ -2,7 +2,7 @@
 
 void Postman::postman()
 {
-	// SOME TESTING
+	#pragma region TESTING
 
 	// Djikstra
 	/*std::pair<std::vector<size_t>, std::vector<size_t>> pair;
@@ -58,18 +58,17 @@ void Postman::postman()
 
 	// Check if graph is complete
 	//std::cout << isComplete() << std::endl;
-
-	// POSTMAN PROBLEM
+	
+	#pragma endregion
 
 	// If graph is not complete return
-	if (not isComplete(graph)) {
+	if (not isComplete(graph, std::vector<size_t>())) {
 		return;
 	}
 
 	// Find vertices with odd degree
 	std::vector<Node*> odd;
 	for (auto vertex : graph->nodes_) {
-		//std::cout << vertex->name_ << " " << graph->countEdges(vertex) << std::endl;
 		if (graph->countEdges(vertex) % 2) {
 			odd.push_back(vertex);
 		}
@@ -82,181 +81,79 @@ void Postman::postman()
 			oddVertices.addNode(vertex);
 		}
 
-		// Create new Graph with odd vertices
-		for (int i = 0; i < odd.size(); i++) {
-			for (int j = i + 1; j < odd.size(); j++) {
-				oddVertices.connectNodes(i, j);
-			}
-		}
-		//std::cout << new Graphviz(&oddVertices) << std::endl;
-
 		// Find shortest path between all vertices
 		std::pair<std::vector<std::vector<size_t>>, std::vector<std::vector<size_t>>> shortestPaths;
 		new FloydWarshall(graph, &shortestPaths);
-		
-		//std::cout << oddVertices.nodes_.size() << std::endl;
 
-		/*std::vector<std::vector<int>> res = pairOdd(std::vector<int>{1,2,3,4,5,6});
-		for (auto v : res) {
-			for (auto p : v) {
-				std::cout << p;
-			}
-			std::cout << std::endl;
-		}*/
-		std::vector<int> vertices{ 1, 2, 3, 4, 5, 6};
-		/*std::vector<std::vector<int>> a = aaa(vertices, std::vector<int>());
-		int i = 0;
-		for (auto v : a) {
+		// Every possible pairings
+		std::vector<size_t> vertices{0, 3, 4, 6};
+		std::vector<std::vector<std::pair<size_t, size_t>>> pairings = pairing(vertices, std::vector<std::pair<size_t, size_t>>());
+		/*int i = 0;
+		for (auto v : pairings) {
 			i++;
-			for (auto p : v) {
-				std::cout << p;
-			}
-			std::cout << std::endl;
-		}
-		std::cout << i << std::endl;*/
-		std::vector<std::vector<std::pair<int, int>>> a = pairing(vertices, std::vector<std::pair<int, int>>());
-		for (auto v : a) {
 			for (auto p : v) {
 				std::cout << '(' << p.first << ' ' << p.second << ')';
 			}
 			std::cout << std::endl;
 		}
-		/*int count = vertices.size();
-		int i = 0;
-		for (auto v : a) {
-			for (auto p : v) {
-				std::cout << p << " ";
-				i++;
-				if (i % count == 0) {
-					std::cout << std::endl;
-				}
+		std::cout <<"Possible Pairings: " << i << std::endl;*/
+		
+		// Get pairing with minimal cost
+		size_t minCost = std::numeric_limits<std::size_t>::max();
+		size_t currentCost = 0;
+		std::vector<std::pair<size_t, size_t>> bestPair;
+		for (auto vec : pairings) {
+			for (auto pair : vec) {
+				currentCost += shortestPaths.first[pair.first][pair.second];
+			}
+			if (currentCost < minCost) {
+				minCost = currentCost;
+				bestPair = vec;
+			}
+			currentCost = 0;
+		}
+
+		// Get new edges to add
+		std::vector<std::vector<size_t>> newEdges;
+		for (auto pair : bestPair) {
+			newEdges.push_back(std::vector<size_t>());
+
+			size_t from = pair.first;
+			size_t to = pair.second;
+
+			newEdges.back().push_back(to);
+
+			while (from != to) {
+				to = shortestPaths.second[from][to];
+				newEdges.back().push_back(to);
+			}
+ 		}
+
+		// Add new edges
+		for (auto vec : newEdges) {
+			for (int i = 0; i < vec.size() - 1; i++) {
+				graph->connectNodes(vec[i], vec[i + 1], graph->getEdges(vec[i], vec[i + 1]).front()[2]);
 			}
 		}
-		std::cout << std::endl;
-
-		std::cout <<"Possible Pairings: " << i / count << std::endl;*/
 	}
+	Graph copy = *graph;
+	std::cout << "Eulerian cycle";
+	for (auto v : eulerianCycle(&copy)) {
+		std::cout << " -> " << graph->nodes_[v]->name_;
+	}
+	std::cout << std::endl;
+
+	copy = *graph;
+	std::cout << "Eulerian path";
+	for (auto v : eulerianPath(&copy)) {
+		std::cout << " -> " << graph->nodes_[v]->name_;
+	}
+	std::cout << std::endl;
 }
 
-std::string Postman::pairOdd(std::vector<int> vertices, int ov)
-{	
-	std::string result;
-	std::stringstream ss;
-	if (vertices.empty()) {
-		return "\n";
-	}
-	else {
-		auto it = std::min_element(vertices.begin(), vertices.end());
-		int i = *it;
-		vertices.erase(it);
-		for (int index = 0; index < vertices.size(); index++) {
-			int j = vertices[index];
-			std::vector<int> tmp = vertices;
-			tmp.erase(tmp.begin() + index);
-			ss << "(" << i << " " << j << ")" << pairOdd(tmp, 0);
-			result = ss.str();
-		}
-		return result;
-		/*Node* v1 = vertices.front();
-		vertices.erase(vertices.begin());
-		for (auto v2 : vertices) {
-			vertices.erase(vertices.begin());
-			ss << "(" << v1->name_ << " " << v2->name_ << ")" << pairOdd(result, vertices);
-			result = ss.str();
-			return result;
-		}*/
-	}
-}
-
-std::vector<std::vector<int>> Postman::pairOdd(std::vector<int> vertices)
-{	
-	std::vector<std::vector<int>> pairs;
-	if (vertices.empty()) {
-		return std::vector<std::vector<int>>();
-	}
-	else {
-		auto it = std::min_element(vertices.begin(), vertices.end());
-		int i = *it;
-		vertices.erase(it);
-		for (int index = 0; index < vertices.size(); index++) {
-			int j = vertices[index];
-			vertices.erase(vertices.begin() + index);
-			pairs.push_back(std::vector<int>{i, j});
-			std::vector<std::vector<int>> returnValue = pairOdd(vertices);
-			pairs.insert(pairs.end(), returnValue.begin(), returnValue.end());
-			vertices.insert(vertices.begin(), j);
-		}
-		vertices.insert(vertices.begin(), i);
-	}
-	return pairs;
-}
-
-std::vector<std::vector<int>> Postman::aaa(std::vector<int> vertices, int pairfirst, int pairsecond)
-{	
-	std::vector<std::vector<int>> pairs;
-	if (vertices.empty()) {
-		pairs.push_back(std::vector<int>{pairfirst, pairsecond});
-		return pairs;
-	}
-	else {
-		auto it = std::min_element(vertices.begin(), vertices.end());
-		int i = *it;
-		vertices.erase(it);
-		for (int index = 0; index < vertices.size(); index++) {
-			int j = vertices[index];
-			vertices.erase(vertices.begin() + index);
-			
-			if (pairfirst != 0 && pairsecond != 0) {
-				pairs.push_back(std::vector<int>{pairfirst, pairsecond});
-			}
-
-			std::vector<std::vector<int>> returnValue = aaa(vertices, i, j);
-			pairs.insert(pairs.end(), returnValue.begin(), returnValue.end());
-
-			vertices.insert(vertices.begin(), j);
-		}
-		vertices.insert(vertices.begin(), i);
-	}
-	return pairs;
-}
-
-std::vector<std::vector<int>> Postman::aaa(std::vector<int> vertices, std::vector<int> list, int in1, int in2)
+std::vector<std::vector<std::pair<size_t, size_t>>> Postman::pairing(std::vector<size_t> vertices, std::vector<std::pair<size_t, size_t>> list)
 {
-	std::vector<std::vector<int>> pairs;
-	if (vertices.empty()) {
-		list.push_back(in1);
-		list.push_back(in2);
-		pairs.push_back(list);
-		return pairs;
-	}
-	else {
-		auto it = std::min_element(vertices.begin(), vertices.end());
-		int i = *it;
-		vertices.erase(it);
-
-		for (int index = 0; index < vertices.size(); index++) {
-			int j = vertices[index];
-			vertices.erase(vertices.begin() + index);
-
-			if (in1 != 0 && in2 != 0) {
-				list.push_back(in1);
-				list.push_back(in2);
-			}
-
-			std::vector<std::vector<int>> returnValue = aaa(vertices, list, i, j);
-			
-			pairs.insert(pairs.end(), returnValue.begin(), returnValue.end());
-
-			vertices.insert(vertices.begin(), j);
-		}
-		vertices.insert(vertices.begin(), i);
-	}
-	return pairs;
-}
-
-std::vector<std::vector<int>> Postman::aaa(std::vector<int> vertices, std::vector<int> list)
-{
-	std::vector<std::vector<int>> pairs;
+	std::vector<std::vector<std::pair<size_t, size_t>>> pairs;
 	if (vertices.empty()) {
 		pairs.push_back(list);
 		return pairs;
@@ -269,42 +166,10 @@ std::vector<std::vector<int>> Postman::aaa(std::vector<int> vertices, std::vecto
 			int j = vertices[index];
 			vertices.erase(vertices.begin() + index);
 
-			list.push_back(i);
-			list.push_back(j);
-
-			std::vector<std::vector<int>> r = aaa(vertices, list);
-
-			list.erase(list.end() - 1);
-			list.erase(list.end() - 1);
-
-			pairs.insert(pairs.end(), r.begin(), r.end());
-
-			vertices.insert(vertices.begin(), j);
-		}
-		vertices.insert(vertices.begin(), i);
-	}
-	return pairs;
-}
-
-std::vector<std::vector<std::pair<int, int>>> Postman::pairing(std::vector<int> vertices, std::vector<std::pair<int, int>> list)
-{
-	std::vector<std::vector<std::pair<int, int>>> pairs;
-	if (vertices.empty()) {
-		pairs.push_back(list);
-		return pairs;
-	}
-	else {
-		auto it = std::min_element(vertices.begin(), vertices.end());
-		int i = *it;
-		vertices.erase(it);
-		for (int index = 0; index < vertices.size(); index++) {
-			int j = vertices[index];
-			vertices.erase(vertices.begin() + index);
-
-			std::pair<int, int> pair(i, j);
+			std::pair<size_t, size_t> pair(i, j);
 			list.push_back(pair);
 
-			std::vector<std::vector<std::pair<int, int>>> r = pairing(vertices, list);
+			std::vector<std::vector<std::pair<size_t, size_t>>> r = pairing(vertices, list);
 
 			list.erase(list.end() - 1);
 
@@ -316,14 +181,68 @@ std::vector<std::vector<std::pair<int, int>>> Postman::pairing(std::vector<int> 
 	return pairs;
 }
 
-bool Postman::isComplete(Graph* g)
+bool Postman::isComplete(Graph* g, std::vector<size_t> visited)
 {
-	std::pair<std::vector<size_t>, std::vector<size_t>> pair;
-	new Djikstra(g, 0, &pair);
-	for (auto cost : pair.first) {
-		if (cost == std::numeric_limits<std::size_t>::max()) {
-			return false;
+	std::pair<std::vector<std::vector<size_t>>, std::vector<std::vector<size_t>>> pair;
+	new FloydWarshall(g, &pair);
+	for (int i = 0; i < pair.first.size(); i++) {
+		for (int j = 0; j < pair.first[i].size(); j++) {
+			if (std::find(visited.begin(), visited.end(), i) != visited.end()
+				|| std::find(visited.begin(), visited.end(), j) != visited.end()) {
+				// Do nothing - do not return false
+			} 
+			else if (pair.first[i][j] == std::numeric_limits<std::size_t>::max()) {
+				return false;
+			}
 		}
 	}
 	return true;
+}
+
+std::vector<size_t> Postman::eulerianCycle(Graph* graph)
+{
+	std::vector<size_t> euler;
+	std::vector<size_t> visited;
+	size_t current = 0;
+	while (!graph->edges_.empty()) {
+		std::vector<size_t> neighbours = graph->getNeighbours(current);
+		for (auto next : neighbours) {
+			graph->deleteEdge(current, next);
+			if (graph->countEdges(current) == 0) {
+				visited.push_back(current);
+			}
+			if (isComplete(graph, visited)) {
+				euler.push_back(current);
+				current = next;
+				break;
+			}
+			else {
+				graph->connectNodes(current, next);
+			}
+		}
+	}
+	euler.push_back(current);
+	return euler;
+}
+
+std::vector<size_t> Postman::eulerianPath(Graph* graph)
+{
+	std::vector<size_t> euler;
+	std::stack<size_t> vertices;
+	size_t current = 0;
+	vertices.push(0);
+	while (!vertices.empty()) {
+		size_t current = vertices.top();
+		std::vector<size_t> neighbours = graph->getNeighbours(current);
+		if (neighbours.size() == 0) {
+			euler.push_back(current);
+			vertices.pop();
+		}
+		else {
+			size_t next = neighbours.front();
+			graph->deleteEdge(current, next);
+			vertices.push(next);
+		}
+	}
+	return euler;
 }

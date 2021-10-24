@@ -16,9 +16,9 @@
 int main()
 {
     /*Graph graph;
-    Node* node1 = new SlowNode("FOO", 1.2f, 3.4f);
+    Node* node1 = new SlowNode("FOO", 0, 1.2f, 3.4f);
     graph.addNode(node1);
-    Node* node2 = new FastNode("BAR", 5.6f, 7.8f);
+    Node* node2 = new FastNode("BAR", 1, 5.6f, 7.8f);
     graph.addNode(node2);
     std::cout << graph.toString() << std::endl;*/
 
@@ -34,11 +34,11 @@ int main()
     for (int i = 0; i < countNodes; i++) {
         if ((std::cin >> type >> name >> x >> y).good()) {
             if (type == 'L') {
-                node = new SlowNode(name, x, y);
+                node = new SlowNode(name, i, x, y);
                 graph.addNode(node);
             }
             else if (type == 'H') {
-                node = new FastNode(name, x, y);
+                node = new FastNode(name, i, x, y);
                 graph.addNode(node);
             }
         }
@@ -59,11 +59,11 @@ int main()
         for (int i = 0; i < z; i++) {
             file >> type >> name >> x >> y;
             if (type == 'L') {
-                node = new SlowNode(name, x, y);
+                node = new SlowNode(name, i, x, y);
                 graph->addNode(node);
             }
             else if (type == 'H') {
-                node = new FastNode(name, x, y);
+                node = new FastNode(name, i, x, y);
                 graph->addNode(node);
             }
         }

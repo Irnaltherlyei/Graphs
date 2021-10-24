@@ -15,9 +15,12 @@ public:
 	unsigned int countEdges(int node);
 	std::vector<std::vector<float>> getEdges(Node* node1, Node* node2);
 	std::vector<std::vector<float>> getEdges(int index1, int index2);
+	void deleteEdge(int index1, int index2);
 	std::vector<Node*> nodes_;
-	std::vector<std::vector<float>> edges_;
+	std::vector<std::vector<float>> edges_;					// Vector with vector [0] = node1 [1] = node2 [2] = weigth
 	bool areConnected(Node* node1, Node* node2);
 	unsigned int getIndex(Node* node);
+	std::vector<std::vector<float>> getEdges(int index);
+	std::vector<size_t> getNeighbours(int index);
 };
 

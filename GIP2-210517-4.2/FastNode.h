@@ -5,7 +5,7 @@
 class FastNode : public Node
 {
 public:
-	FastNode(std::string name, float x, float y) : Node{ name, x, y} {}
+	FastNode(std::string name, int index, float x, float y) : Node{ name, index, x, y} {}
 	std::string toString() const;
 };
 

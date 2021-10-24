@@ -74,6 +74,16 @@ std::vector<std::vector<float>> Graph::getEdges(int index1, int index2)
     return edges;
 }
 
+void Graph::deleteEdge(int index1, int index2)
+{
+    for (int i = 0; i < edges_.size(); i++) {
+        if (edges_[i][0] == index1 && edges_[i][1] == index2 || edges_[i][1] == index1 && edges_[i][0] == index2) {
+            edges_.erase(edges_.begin() + i);
+            break;
+        }
+    }
+}
+
 unsigned int Graph::countEdges(Node* node)
 {
     int index = getIndex(node);
@@ -123,4 +133,50 @@ unsigned int Graph::getIndex(Node* node) {
         }
     }
     return index;
+}
+
+std::vector<std::vector<float>> Graph::getEdges(int index)
+{
+    std::vector<std::vector<float>> edges;
+    for (int i = 0; i < edges_.size(); i++) {
+        float first;
+        float second;
+        if (edges_[i][0] == index){
+            first = edges_[i][0];
+            second = edges_[i][1];
+        }
+        else if (edges_[i][1] == index) {
+            first = edges_[i][1];
+            second = edges_[i][0];
+        }
+        else {
+            continue;
+        }
+        edges.push_back(std::vector<float>{first, second, edges_[i][2]});
+    }
+    return edges;
+}
+
+bool Graph::edgeExists(int index1, int index2)
+{
+    for (auto edge : edges_) {
+        if (edge[0] == index1 && edge[1] == index2 || edge[0] == index2 && edge[1] == index1) {
+            return true;
+        }
+    }
+    return false;
+}
+
+std::vector<size_t> Graph::getNeighbours(int index)
+{
+    std::vector<size_t> neighbours;
+    for (auto edge : edges_) {
+        if (edge[0] == index) {
+            neighbours.push_back(edge[1]);
+        }
+        else if(edge[1] == index) {
+            neighbours.push_back(edge[0]);
+        }
+    }
+    return neighbours;
 }
