@@ -36,21 +36,6 @@ void Djikstra::djikstra(unsigned int vertex, std::pair<std::vector<size_t>, std:
 	std::vector<size_t> visited;
 
 	while (!to_visit.empty()) {
-		// Using matrix
-		/*int index_min_value = to_be_processed(to_visit);
-		for (int i = 0; i < graph->matrix.size(); i++) {
-			if (graph->matrix[index_min_value][i] > 0) {
-				if (std::find(visited.begin(), visited.end(), index_min_value) == visited.end()) {
-					to_visit.push_back(i);
-				}
-				if (length[i] > length[index_min_value] + graph->matrix[index_min_value][i]) {
-					length[i] = length[index_min_value] + graph->matrix[index_min_value][i];
-					prev[i] = index_min_value;
-				}				
-			}
-		}*/
-		
-		// Using edges_
 		int index_min_value = to_be_processed(to_visit);
 		for (int i = 0; i < graph->nodes_.size(); i++) {
 			if (graph->getEdges(index_min_value, i).empty()){
@@ -80,17 +65,6 @@ void Djikstra::djikstra(unsigned int vertex, std::pair<std::vector<size_t>, std:
 		}
 		std::sort(to_visit.begin(), to_visit.end());
 		
-		/*std::cout << "Current Node: " << index_min_value << std::endl;
-		std::cout << "to_visit: ";
-		for (auto a : to_visit) {
-				std::cout << a << ' ';
-		}
-		std::cout << std::endl;
-		std::cout << "visited: ";
-		for (auto a : visited) {
-			std::cout << a << ' ';
-		}
-		std::cout << std::endl;*/
 	}
 	if (pair != nullptr) {
 		*pair = std::pair<std::vector<size_t>, std::vector<size_t>>(length, prev);

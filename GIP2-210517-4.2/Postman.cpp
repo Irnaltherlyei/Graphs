@@ -52,7 +52,7 @@ void Postman::postman()
 
 	// Count edges
 	/*for (auto u : graph->nodes_) {
-		std::cout << std::setw(3) << graph->countEdges(u->name_);
+		std::cout << std::setw(3) << graph->getNeighbours(u->index_);
 	}
 	std::cout << std::endl;*/
 
@@ -69,7 +69,7 @@ void Postman::postman()
 	// Find vertices with odd degree
 	std::vector<Node*> odd;
 	for (auto vertex : graph->nodes_) {
-		if (graph->countEdges(vertex) % 2) {
+		if (graph->getNeighbours(vertex->index_).size() % 2) {
 			odd.push_back(vertex);
 		}
 	}
@@ -132,7 +132,7 @@ void Postman::postman()
 		// Add new edges
 		for (auto vec : newEdges) {
 			for (int i = 0; i < vec.size() - 1; i++) {
-				graph->connectNodes(vec[i], vec[i + 1], graph->getEdges(vec[i], vec[i + 1]).front()[2]);
+				graph->addEdge(vec[i], vec[i + 1], graph->getEdges(vec[i], vec[i + 1]).front()[2]);
 			}
 		}
 	}
@@ -208,7 +208,7 @@ std::vector<size_t> Postman::eulerianCycle(Graph* graph)
 		std::vector<size_t> neighbours = graph->getNeighbours(current);
 		for (auto next : neighbours) {
 			graph->deleteEdge(current, next);
-			if (graph->countEdges(current) == 0) {
+			if (graph->getNeighbours(current).size() == 0) {
 				visited.push_back(current);
 			}
 			if (isComplete(graph, visited)) {
@@ -217,7 +217,7 @@ std::vector<size_t> Postman::eulerianCycle(Graph* graph)
 				break;
 			}
 			else {
-				graph->connectNodes(current, next);
+				graph->addEdge(current, next);
 			}
 		}
 	}

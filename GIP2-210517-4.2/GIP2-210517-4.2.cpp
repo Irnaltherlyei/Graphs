@@ -73,7 +73,7 @@ int main()
         float weight = 1.0f;
         while (file >> node1 >> node2 >> weight) {
             if (node1 >= 0 && node2 >= 0 && node1 < z && node2 < z) {
-                graph->connectNodes(node1, node2, weight);
+                graph->addEdge(node1, node2, weight);
             }
         }
         file.close();
@@ -92,8 +92,8 @@ int main()
         //in << new AdjacencyMatrixWriter(graph);
         //in << new IncidencyMatrixWriter(graph);
         //in << new EdgeTable(graph);
-        //in << new Djikstra(graph, 0);                   // Returns cost matrix and parent matrix
-        //in << new FloydWarshall(graph);               // Returns cost matrix and parent matrix
+        //in << new Djikstra(graph, 0);                     // Returns cost matrix and parent matrix
+        //in << new FloydWarshall(graph);                   // Returns cost matrix and parent matrix
         in.close();
     }
     new Postman(graph);

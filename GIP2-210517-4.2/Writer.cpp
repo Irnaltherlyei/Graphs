@@ -2,14 +2,6 @@
 std::string Writer::toString() const
 {
     std::stringstream ss;
-    // Using matrix
-    /*for (auto v : matrix) {
-        for (auto f : v) {
-            ss << std::setw(3) << f << " ";
-        }
-        ss << std::endl;
-    }*/
-    // Using edges_
     for (auto i : graph->nodes_) {
         for (auto j : graph->nodes_) {
             ss << std::setw(5);
@@ -25,7 +17,6 @@ std::string Writer::toString() const
             }
         }
         ss << std::endl;
-        std::cout << std::endl;
     }
     return ss.str();
 }

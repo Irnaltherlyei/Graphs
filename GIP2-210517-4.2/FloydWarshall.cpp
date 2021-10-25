@@ -31,26 +31,6 @@ std::string FloydWarshall::toString() const
 
 void FloydWarshall::floydWarshall(std::pair<std::vector<std::vector<size_t>>, std::vector<std::vector<size_t>>>* pair)
 {
-	/*floydWarshallMatrix = std::vector<std::vector<size_t>>( graph->matrix.size(), std::vector<size_t>(graph->matrix.size(), std::numeric_limits<std::size_t>::max()));
-	prev = std::vector<std::vector<size_t>>(graph->matrix.size(), std::vector<size_t>(graph->matrix.size(), std::numeric_limits<std::size_t>::max()));
-	for (int i = 0; i < graph->matrix.size(); i++) {
-		for (int j = 0; j < graph->matrix.size(); j++) {
-			if (i == j) {
-				floydWarshallMatrix[i][j] = 0;
-			}
-			else if(graph->matrix[i][j] == 0) {
-				floydWarshallMatrix[i][j] = std::numeric_limits<std::size_t>::max();
-			}
-			else if (graph->matrix[i][j] > 0) {
-				floydWarshallMatrix[i][j] = graph->matrix[i][j];
-				prev[i][j] = i;
-			}
-			else {
-				prev[i][j] = std::numeric_limits<std::size_t>::max();
-			}
-		}
-	}*/
-
 	floydWarshallMatrix = std::vector<std::vector<size_t>>(graph->nodes_.size(), std::vector<size_t>(graph->nodes_.size(), std::numeric_limits<std::size_t>::max()));
 	prev = std::vector<std::vector<size_t>>(graph->nodes_.size(), std::vector<size_t>(graph->nodes_.size(), std::numeric_limits<std::size_t>::max()));
 	for (int i = 0; i < graph->nodes_.size(); i++) {

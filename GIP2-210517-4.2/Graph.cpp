@@ -6,7 +6,7 @@ void Graph::addNode(Node* node)
     nodes_.push_back(node);
 }
 
-void Graph::connectNodes(Node* node1, Node* node2, float weight)
+void Graph::addEdge(Node* node1, Node* node2, float weight)
 {
     int index1 = getIndex(node1);
     int index2 = getIndex(node2);
@@ -17,33 +17,13 @@ void Graph::connectNodes(Node* node1, Node* node2, float weight)
     edges_.push_back(std::vector<float>{(float)index1, (float)index2, weight});
 }
 
-void Graph::connectNodes(int node1, int node2, float weight)
+void Graph::addEdge(int node1, int node2, float weight)
 {
     if (node1 >= 0 && node2 >= 0 && node1 < nodes_.size() && node2 < nodes_.size()) {
         matrix[node1][node2] = weight;
         matrix[node2][node1] = weight;
         edges_.push_back(std::vector<float>{(float)node1, (float)node2, weight});
     }
-}
-
-unsigned int Graph::countEdges(int node)
-{
-    unsigned int count = 0;
-    if (node != -1) {
-        // Using matrix
-        /*for (int j = 0; j < matrix[node].size(); j++) {
-            if (matrix[node][j] != 0) {
-                count++;
-            }
-        }*/
-        // Using edges_
-        for (auto edge : edges_) {
-            if (edge[0] == node || edge[1] == node) {
-                count++;
-            }
-        }
-    }
-    return count;
 }
 
 std::vector<std::vector<float>> Graph::getEdges(Node* node1, Node* node2)
@@ -82,29 +62,6 @@ void Graph::deleteEdge(int index1, int index2)
             break;
         }
     }
-}
-
-unsigned int Graph::countEdges(Node* node)
-{
-    int index = getIndex(node);
-    if (index == -1) return false;
-
-    unsigned int count = 0;
-    if (index != -1) {
-        // Using matrix
-        /*for (int j = 0; j < matrix[index].size(); j++) {
-            if (matrix[index][j] != 0) {
-                count++;
-            }
-        }*/
-        // Using edges_
-        for (auto edge : edges_) {
-            if (edge[0] == index || edge[1] == index) {
-                count++;
-            }
-        }
-    }
-    return count;
 }
 
 bool Graph::areConnected(Node* node1, Node* node2)
@@ -155,16 +112,6 @@ std::vector<std::vector<float>> Graph::getEdges(int index)
         edges.push_back(std::vector<float>{first, second, edges_[i][2]});
     }
     return edges;
-}
-
-bool Graph::edgeExists(int index1, int index2)
-{
-    for (auto edge : edges_) {
-        if (edge[0] == index1 && edge[1] == index2 || edge[0] == index2 && edge[1] == index1) {
-            return true;
-        }
-    }
-    return false;
 }
 
 std::vector<size_t> Graph::getNeighbours(int index)
