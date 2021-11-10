@@ -76,17 +76,17 @@ void Postman::postman()
 
 	// If vertices with odd degree are found
 	if (not odd.empty()) {
+		std::vector<size_t> vertices;
 		Graph oddVertices(odd.size());
 		for (auto vertex : odd) {
 			oddVertices.addNode(vertex);
+			vertices.push_back(vertex->index_);
 		}
 
 		// Find shortest path between all vertices
 		std::pair<std::vector<std::vector<size_t>>, std::vector<std::vector<size_t>>> shortestPaths;
 		new FloydWarshall(graph, &shortestPaths);
-
-		// Every possible pairings
-		std::vector<size_t> vertices{0, 3, 4, 6};
+		
 		std::vector<std::vector<std::pair<size_t, size_t>>> pairings = pairing(vertices, std::vector<std::pair<size_t, size_t>>());
 		/*int i = 0;
 		for (auto v : pairings) {
@@ -136,19 +136,25 @@ void Postman::postman()
 			}
 		}
 	}
+
+	// Euler cycle
 	Graph copy = *graph;
 	std::cout << "Eulerian cycle";
-	for (auto v : eulerianCycle(&copy)) {
+	for (auto v : eulerianCycle(&copy, 0)) {
 		std::cout << " -> " << graph->nodes_[v]->name_;
 	}
 	std::cout << std::endl;
 
+	// Euler path
 	copy = *graph;
 	std::cout << "Eulerian path";
-	for (auto v : eulerianPath(&copy)) {
+	for (auto v : eulerianPath(&copy, 0)) {
 		std::cout << " -> " << graph->nodes_[v]->name_;
 	}
 	std::cout << std::endl;
+
+	// Graph with new edges
+	std::cout << new Graphviz(graph) << std::endl;
 }
 
 std::vector<std::vector<std::pair<size_t, size_t>>> Postman::pairing(std::vector<size_t> vertices, std::vector<std::pair<size_t, size_t>> list)
@@ -193,17 +199,17 @@ bool Postman::isComplete(Graph* g, std::vector<size_t> visited)
 			} 
 			else if (pair.first[i][j] == std::numeric_limits<std::size_t>::max()) {
 				return false;
-			}
+			} 
 		}
 	}
 	return true;
 }
 
-std::vector<size_t> Postman::eulerianCycle(Graph* graph)
+std::vector<size_t> Postman::eulerianCycle(Graph* graph, size_t startVertex)
 {
 	std::vector<size_t> euler;
 	std::vector<size_t> visited;
-	size_t current = 0;
+	size_t current = startVertex;
 	while (!graph->edges_.empty()) {
 		std::vector<size_t> neighbours = graph->getNeighbours(current);
 		for (auto next : neighbours) {
@@ -225,12 +231,12 @@ std::vector<size_t> Postman::eulerianCycle(Graph* graph)
 	return euler;
 }
 
-std::vector<size_t> Postman::eulerianPath(Graph* graph)
+std::vector<size_t> Postman::eulerianPath(Graph* graph, size_t startVertex)
 {
 	std::vector<size_t> euler;
 	std::stack<size_t> vertices;
-	size_t current = 0;
-	vertices.push(0);
+	size_t current = startVertex;
+	vertices.push(startVertex);
 	while (!vertices.empty()) {
 		size_t current = vertices.top();
 		std::vector<size_t> neighbours = graph->getNeighbours(current);
