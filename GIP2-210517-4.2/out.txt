@@ -8,7 +8,6 @@ graph {
   G [pos="3,4!",shape=circle]
   A -- B [label="12"]
   A -- C [label="9"]
-  A -- D [label="39"]
   A -- F [label="14"]
   A -- G [label="20"]
   B -- C [label="7"]

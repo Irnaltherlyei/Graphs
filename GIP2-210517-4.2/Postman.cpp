@@ -74,6 +74,16 @@ void Postman::postman()
 		}
 	}
 
+	if (odd.size() == 2) {
+		// Euler path
+		Graph copy = *graph;
+		std::cout << "Eulerian path";
+		for (auto v : eulerianPath(&copy, 4)) {
+			std::cout << " -> " << graph->nodes_[v]->name_;
+		}
+		std::cout << std::endl;
+		return;
+	}
 	// If vertices with odd degree are found
 	if (not odd.empty()) {
 		std::vector<size_t> vertices;
@@ -137,22 +147,21 @@ void Postman::postman()
 
 	// Euler cycle
 	Graph copy = *graph;
-	std::cout << "Eulerian cycle";
-	for (auto v : eulerianCycle(&copy, 0)) {
+	/*std::cout << "Fleury: Eulerian cycle";
+	for (auto v : fleury(&copy, 0)) {
 		std::cout << " -> " << graph->nodes_[v]->name_;
 	}
-	std::cout << std::endl;
+	std::cout << std::endl;*/
 
-	// Euler path
-	copy = *graph;
-	std::cout << "Eulerian path";
-	for (auto v : eulerianPath(&copy, 0)) {
+	/*copy = *graph;
+	std::cout << "Hierholzer: Eulerian cycle";
+	for (auto v : hierholzer(&copy, 0)) {
 		std::cout << " -> " << graph->nodes_[v]->name_;
 	}
-	std::cout << std::endl;
+	std::cout << std::endl;*/
 
 	// Graph with new edges
-	std::cout << new Graphviz(graph) << std::endl;
+	std::cout << new Graphviz(&copy) << std::endl;
 }
 
 std::vector<std::vector<std::pair<size_t, size_t>>> Postman::pairing(std::vector<size_t> vertices, std::vector<std::pair<size_t, size_t>> list)
@@ -203,7 +212,7 @@ bool Postman::isComplete(Graph* g, std::vector<size_t> visited)
 	return true;
 }
 
-std::vector<size_t> Postman::eulerianCycle(Graph* graph, size_t startVertex)
+std::vector<size_t> Postman::fleury(Graph* graph, size_t startVertex)
 {
 	std::vector<size_t> euler;
 	std::vector<size_t> visited;
@@ -229,12 +238,88 @@ std::vector<size_t> Postman::eulerianCycle(Graph* graph, size_t startVertex)
 	return euler;
 }
 
-std::vector<size_t> Postman::eulerianPath(Graph* graph, size_t startVertex)
+std::vector<size_t> Postman::hierholzer(Graph* graph, size_t startVertex)
+{
+	std::vector<std::vector<size_t>> euler;
+	size_t current = startVertex;
+	// Get all cycles and store in euler.
+	while (graph->edges_.size() != 0) {
+		std::vector<size_t> tmp = cycle(graph, current);
+		euler.push_back(tmp);
+		for (auto n : tmp) {
+			std::cout << graph->nodes_[n]->name_ << " ";
+ 		}
+		std::cout << std::endl;
+		
+		if (graph->edges_.size() != 0) {
+			current = graph->edges_.front()[0];
+		}
+		/*std::cout << " NEXT = " << current << " " << graph->nodes_[current]->name_ << " " << std::endl;
+		std::cout << graph->edges_.size() << std::endl;
+		std::cout << new Graphviz(graph) << std::endl;*/
+	}
+	while (euler.size() >= 2) {
+		std::vector<size_t> tmp = euler.back();
+		euler.pop_back();
+		int first = tmp.front();
+
+		std::vector<size_t> tmp2 = euler.back();
+		euler.pop_back();
+		auto it = std::find(tmp2.begin(), tmp2.end(), first);
+
+		if (it != tmp2.end()) {
+			int index = std::distance(tmp2.begin(), it);
+			tmp2.erase(tmp2.begin() + index);
+			tmp2.insert(tmp2.begin() + index, tmp.begin(), tmp.end());
+			euler.push_back(tmp2);
+		}
+		else {
+			euler.insert(euler.begin(), tmp2);
+		}
+		
+	}
+	return euler.front();
+}
+
+std::vector<size_t> Postman::cycle(Graph* graph, size_t startVertex)
+{
+	std::vector<size_t> cycle;
+	size_t current = startVertex;
+	cycle.push_back(current);
+
+	while (!graph->edges_.empty()) {
+		std::vector<size_t> neighbours = graph->getNeighbours(current);
+		/*std::cout << std::endl;
+		for (int i = 0; i < neighbours.size(); i++) {
+			std::cout << neighbours[i] << " ";
+		}
+		std::cout << std::endl;*/
+
+		for (auto next : neighbours) {
+			graph->deleteEdge(current, next);
+			//std::cout << "DELETE: " << current << " " << next << std::endl;
+			if (next == startVertex || graph->getNeighbours(next).size() == 0) {
+				//std::cout << graph->nodes_[next]->name_ << " ";
+				cycle.push_back(next);
+				return cycle;
+			} else {
+				//std::cout << graph->nodes_[current]->name_ << " ";
+				cycle.push_back(next);
+				current = next;
+				break;
+			}
+		}
+	}
+	return cycle;
+	//std::cout << std::endl;
+}
+
+std::vector<size_t> Postman::eulerianPath(Graph* graph, size_t oddVertex)
 {
 	std::vector<size_t> euler;
 	std::stack<size_t> vertices;
-	size_t current = startVertex;
-	vertices.push(startVertex);
+	size_t current = oddVertex;
+	vertices.push(oddVertex);
 	while (!vertices.empty()) {
 		size_t current = vertices.top();
 		std::vector<size_t> neighbours = graph->getNeighbours(current);
