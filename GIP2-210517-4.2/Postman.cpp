@@ -77,9 +77,7 @@ void Postman::postman()
 	// If vertices with odd degree are found
 	if (not odd.empty()) {
 		std::vector<size_t> vertices;
-		Graph oddVertices(odd.size());
 		for (auto vertex : odd) {
-			oddVertices.addNode(vertex);
 			vertices.push_back(vertex->index_);
 		}
 
